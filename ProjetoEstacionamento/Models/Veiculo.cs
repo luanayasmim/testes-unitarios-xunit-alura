@@ -1,6 +1,6 @@
 ﻿namespace ProjetoEstacionamento.Models;
 
-public class Veiculo
+public class Veiculo //: IEnumerable<object[]>
 {
     private string _ticket;
     private string _placa;
@@ -84,30 +84,30 @@ public class Veiculo
     //Métodos
     public void Acelerar(int tempoSeg)
     {
-        this.VelocidadeAtual += (tempoSeg * 10);
+        VelocidadeAtual += (tempoSeg * 10);
     }
 
     public void Frear(int tempoSeg)
     {
-        this.VelocidadeAtual -= (tempoSeg * 15);
+        VelocidadeAtual -= (tempoSeg * 15);
     }
 
-    public void AlteraDadosVeiculo(Veiculo veiculoAlterado)
+    public void AlterarDados(Veiculo veiculoAlterado)
     {
-        this.Proprietario = veiculoAlterado.Proprietario;
-        this.Modelo = veiculoAlterado.Modelo;
-        this.Largura = veiculoAlterado.Largura;
-        this.Cor = veiculoAlterado.Cor;
+        Proprietario = veiculoAlterado.Proprietario;
+        Modelo = veiculoAlterado.Modelo;
+        Largura = veiculoAlterado.Largura;
+        Cor = veiculoAlterado.Cor;
     }
 
     public override string ToString()
     {
         return $"Ficha do Veículo:\n " +
-                $"Tipo do Veículo: {this.Tipo.ToString()}\n " +
-                $"Proprietário: {this.Proprietario}\n" +
-                $"Modelo: {this.Modelo}\n" +
-                $"Cor: {this.Cor}\n" +
-                $"Placa: {this.Placa}\n";
+                $"Tipo do Veículo: {Tipo}\n " +
+                $"Proprietário: {Proprietario}\n" +
+                $"Modelo: {Modelo}\n" +
+                $"Cor: {Cor}\n" +
+                $"Placa: {Placa}\n";
 
     }
 
@@ -121,5 +121,21 @@ public class Veiculo
     {
         Proprietario = proprietario;
     }
+
+    //public IEnumerable<object[]> GetEnumerator()
+    //{
+    //    yield return new object[]
+    //    {
+    //        new Veiculo
+    //        {
+    //            Proprietario = "Luana Yasmim",
+    //            Placa = "LUA-2003",
+    //            Cor = "Azul",
+    //            Modelo = "Fusca"
+    //        }
+    //    };
+    //}
+
+    //IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }
 

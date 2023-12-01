@@ -9,31 +9,35 @@ public class Patio
     }
     private List<Veiculo> veiculos;
     private double faturado;
+    private Operador _operador;
+
     public double Faturado { get => faturado; set => faturado = value; }
     public List<Veiculo> Veiculos { get => veiculos; set => veiculos = value; }
+    public Operador Operador { get => _operador; set => _operador = value; }
     public double TotalFaturado()
     {
-        return this.Faturado;
+        return Faturado;
     }
 
     public string MostrarFaturamento()
     {
-        string totalfaturado = String.Format("Total faturado até o momento :::::::::::::::::::::::::::: {0:c}", this.TotalFaturado());
+        string totalfaturado = String.Format("Total faturado até o momento :::::::::::::::::::::::::::: {0:c}", TotalFaturado());
         return totalfaturado;
     }
 
     public void RegistrarEntradaVeiculo(Veiculo veiculo)
     {
         veiculo.HoraEntrada = DateTime.Now;
-        this.Veiculos.Add(veiculo);
+        GerarTicket(veiculo);
+        Veiculos.Add(veiculo);
     }
 
     public string RegistrarSaidaVeiculo(String placa)
     {
-        Veiculo procurado = null;
+        Veiculo? procurado = null;
         string informacao = string.Empty;
 
-        foreach (Veiculo v in this.Veiculos)
+        foreach (Veiculo v in Veiculos)
         {
             if (v.Placa == placa)
             {
@@ -57,14 +61,14 @@ public class Patio
                                          "Permanência: {2: HH:mm:ss} \n " +
                                          "Valor a pagar: {3:c}", v.HoraEntrada, v.HoraSaida, new DateTime().Add(tempoPermanencia), valorASerCobrado);
                 procurado = v;
-                this.Faturado = this.Faturado + valorASerCobrado;
+                Faturado += valorASerCobrado;
                 break;
             }
 
         }
         if (procurado != null)
         {
-            this.Veiculos.Remove(procurado);
+            Veiculos.Remove(procurado);
         }
         else
         {
@@ -72,5 +76,31 @@ public class Patio
         }
 
         return informacao;
+    }
+
+    public Veiculo PesquisaVeiculo(string idTicket)
+    {
+        var encontrado = (from veiculo in Veiculos where veiculo.IdTicket == idTicket select veiculo).SingleOrDefault();
+
+        return encontrado!;
+    }
+
+    public Veiculo AlterarDadosVeiculo(Veiculo veiculoAlterado)
+    {
+        var veiculoTemp = (from veiculo in Veiculos where veiculo.Placa == veiculoAlterado.Placa select veiculo).SingleOrDefault();
+        veiculoTemp.AlterarDados(veiculoAlterado);
+        return veiculoTemp!;
+    }
+
+    private string GerarTicket(Veiculo veiculo)
+    {
+        veiculo.IdTicket = Guid.NewGuid().ToString().Substring(0, 5);
+        var ticket = "### Ticket Estacionamento ###\n" +
+            $">>> Identificador: {veiculo.IdTicket}\n" +
+            $">>> Data/Hora de Entrada: {DateTime.Now}\n" +
+            $">>> Placa Veículo: {veiculo.Placa} \n" +
+            $">>> Operador: {_operador.Nome}";
+        veiculo.Ticket = ticket;
+        return ticket;
     }
 }
