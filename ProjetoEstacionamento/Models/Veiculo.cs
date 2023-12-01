@@ -1,4 +1,4 @@
-﻿namespace console_estacionamento.Models;
+﻿namespace ProjetoEstacionamento.Models;
 
 public class Veiculo
 {
@@ -122,3 +122,4 @@ public class Veiculo
         Proprietario = proprietario;
     }
 }
+
